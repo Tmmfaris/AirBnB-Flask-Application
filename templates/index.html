@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Airbnb Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            padding: 5px;
+            width: 200px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 8px 15px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Airbnb Price Prediction</h1>
+    <form id="predictionForm">
+        <label>Host Experience (years):
+            <input type="number" name="Host Experience" value="5" required>
+        </label>
+        <label>Beds:
+            <input type="number" name="Beds" value="2" required>
+        </label>
+        <label>Number Of Reviews:
+            <input type="number" name="Number Of Reviews" value="10" required>
+        </label>
+        <label>Review Scores Rating:
+            <input type="number" name="Review Scores Rating" value="95" required>
+        </label>
+        <label>Neighbourhood_Brooklyn:
+            <input type="number" name="Neighbourhood_Brooklyn" value="1">
+        </label>
+        <label>Room Type_Private Room:
+            <input type="number" name="Room Type_Private Room" value="1">
+        </label>
+
+        <button type="submit">Predict Price</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Collect form data into JSON
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = Number(value); // convert to numeric
+            });
+
+            // Send POST request to Flask backend
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                document.getElementById('result').innerText = `Error: ${result.error}`;
+            } else {
+                document.getElementById('result').innerText = 
+                    `Predicted Price: $${result.predicted_price}\nSuggested Range: $${result.price_range.lower} – $${result.price_range.upper}`;
+            }
+        });
+    </script>
+</body>
+</html>
