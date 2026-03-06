@@ -1,1 +1,24 @@
+# Airbnb Price Prediction (Flask Application)
 
+This project is a Flask web application that predicts Airbnb listing prices based on host and property features.  
+Instead of returning a single predicted price, the app provides a **dynamic price range** (prediction ± margin), giving hosts a more realistic view of market variability and model uncertainty.
+
+---
+
+## Features
+- Flask backend serving predictions
+- Frontend form (`index.html`) for user input
+- Dynamic price range output (e.g., $100 → $80–$120)
+- JSON API response for integration
+- Clean project structure with `templates/` folder
+
+---
+
+## Project Structure
+AirBnB-Flask-Application/
+│
+├── app.py                # Flask backend
+├── final_model.pkl       # Trained Random Forest model
+├── templates/
+│   └── index.html        # Frontend form
+└── README.md             # Project documentation
